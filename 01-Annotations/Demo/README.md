@@ -41,11 +41,15 @@ _JUnit 5 = Junit Platform + JUnit Jupiter + JUnit Vintage_
  - `@TestFactory` – Chỉ định method là một test factory cho các dynamic test.
  - `@TestTemplate` – Chỉ định method là một mẫu cho các test case.
  - `@TestMethodOrder` – Cấu hình thứ tự thực thi cho các @Test.
- - `@TestInstance` – Quy định vòng đời của cho các annotation test class (@Nested, biến static etc)
+ - `@TestInstance` – Quy định vòng đời của cho các annotation test class 
  - `@DisplayName` – Đặt tên cho test class hoặc test method.
  - `@DisplayNameGeneration` – Đặt tên cho các test class được generate.
  - `@BeforeEach` – chỉ định 1 method luôn được thực thi trước mỗi test method thực thi.
- - `@AfterEach` – chỉ định 1 method luôn thực thi sau khi 1 test method thực thi xong.
+ - `@AfterEach` – chỉ định 1 method luôn thực thi sau khi 1 test method thực thi xong.
  - `@BeforeAll` – Chỉ định method sẽ được thực thi đầu tiên trong test class.
  - `@AfterAll` – Chỉ định method sẽ được thực thi khi tất cả các test method trong class thực thi xong.
  - `@Disable` – Vô hiệu hoá một test method hay một test class thực thi
+
+## Viết test
+![image](https://github.com/EriChannel/JUnit-5-Tutorial/blob/82105980f2a55ce8c0e6dda61ea4fb26c2dc2d84/Images/junit.png)
+
