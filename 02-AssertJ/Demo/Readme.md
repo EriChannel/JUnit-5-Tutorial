@@ -17,6 +17,7 @@ AssertJ là một thư viện để đơn giản hóa việc viết các asserti
     <version>3.4.1</version>
     <scope>test</scope>
 </dependency>
+
 ```
 
 Dependency này chỉ bao gồm các assertions Java cơ bản. Nếu bạn muốn sử dụng assertion nâng cao, bạn sẽ phải thêm modules bổ sung riêng
@@ -31,12 +32,14 @@ Dependency này chỉ bao gồm các assertions Java cơ bản. Nếu bạn mu�
 
 ```java
 assertThat(anyReferenceOrValue);
+
 ```
 
 Để bắt đầu, ta cần import:
 
 ```java
 import static org.assertj.core.api.Java6Assertions.assertThat;
+
 ```
 
 Ví dụ:
@@ -50,6 +53,7 @@ void sampleAssertion(){
             .contains("sample")
             .endsWith("Test");
 }
+
 ```
 
 Result:
@@ -72,6 +76,7 @@ public class Dog {
         this.weight = weight;
     }
 }
+
 ```
 
 Giờ hãy thử so sánh hai đối tượng sau
@@ -86,6 +91,7 @@ void testMethod_Objects(){
     //Test will fail as isEqualTo() compares object reference
     assertThat(mic).isEqualTo(micClone);
 }
+
 ```
 
 Tại đây mình sử dụng _**isEqualTo()**_ để so sánh hai object là _**mic**_ và _**micClone**_. Tuy nhiên test không thành công bởi isEqualTo() so sánh các tham chiếu đối tượng chứ không so sánh nội dung
@@ -96,6 +102,7 @@ Thay vào đó nếu chúng ta muốn so sánh nội dung của chúng, chúng t
 
 ```java
 assertThat(mic).isEqualToComparingFieldByFieldRecursively(micClone);
+
 ```
 
 Hoặc nếu chỉ muốn so sánh một thuộc tính ta có thể sử dụng _**isEqualToComparingOnlyGivenFields()**_
@@ -110,6 +117,7 @@ void testMethod_Objects(){
     //Only compare name
     assertThat(mic).isEqualToComparingOnlyGivenFields(otherDog, "name");
 }
+
 ```
 
 Ở đây mình chỉ so sánh thuộc tính name
@@ -125,18 +133,21 @@ void testMethod_Arrays(){
     String [] countries = new String[]{"Russia", "Viet Nam", "America", "Japan", "China"};
     assertThat(countries).contains("Viet Nam");
 }
+
 ```
 
 Hoặc nếu mảng không trống:
 
 ```java
 assertThat(countries).isNotEmpty();
+
 ```
 
 Hoặc nếu mảng bắt đầu với một phần tử nhất định:
 
 ```java
 assertThat(countries).startsWith("Russia");
+
 ```
 
 Hoặc kết hợp nhiều assertions:
@@ -146,6 +157,7 @@ assertThat(countries).isNotEmpty() //Array is not empty
         .contains("Viet Nam")      //contains "Viet Nam" element
         .doesNotContainNull()      //does not contains any nulls
         .containsSequence("America", "Japan");  //contains sequence of element "America", "Japan"
+
 ```
 
 ### Strings Assertions
@@ -163,6 +175,7 @@ void testMethod_Strings(){
             .doesNotContain("Anh")  //Not contain "Anh"
             .endsWith("fix");       //End with "fix"
 }
+
 ```
 
 Ở đây mình kết hợp nhiều assertion với nhau bao gồm _**isNotNull()**_ để kiểm tra chuỗi có null không, _**startsWith()**_ chuỗi bắt đầu với từ “Chị”, _**doesNotContain()**_ không chứa từ “Anh”, _**endsWith()**_ chuỗi kết thúc bằng từ “fix”
@@ -174,6 +187,7 @@ String say = "Chị không muốn nhiêu bug nhưng mà bug nhiều nên chị p
 String sayClone = say;
 
 assertThat(say).isEqualTo(sayClone);
+
 ```
 
 ### Numbers Assertions
@@ -187,6 +201,7 @@ void testMethod_Numbers(){
     Double value = 12.0;
     assertThat(value).isEqualTo(12.2, withPrecision(1d));
 }
+
 ```
 
 Tại đây ta có độ chính xác là 1.
@@ -195,16 +210,89 @@ Hoặc có offset
 
 ```java
 assertThat(value).isCloseTo(15.0, Offset.offset(3d));
+
 ```
 
 Hoặc value nằm trong một khoảng, ví dụ:
 
 ```java
 assertThat(value).isBetween(10.0, 15.0); //value >= 10.0 and value <= 15.0
+
 ```
 
 Hoặc
 
 ```java
-assertThat(value).isStrictlyBetween(10.0, 15.0); //value > 10.0 and value < 15.0
+assertThat(value).isStrictlyBetween(10.0, 15.0); //value > 10.0 and value < 15.
+```
+
+* * *
+
+### Map Assertions
+
+Map Assertions cho phép bạn kiểm tra xem map có chứa entry, tập hợp các entry, hoặc key/values riêng biệt hay không
+
+Ví dụ dưới đây liệt kê một số assertions chúng ta hay sử dụng đối với Map:
+
+```java
+@Test
+@DisplayName("TestMap")
+void testMethod_Map(){
+    Map<String, String> countryCityMap = new HashMap<String, String>();
+    countryCityMap.put("Viet Nam", "Ha Noi");
+    countryCityMap.put("Japan", "Tokyo");
+    countryCityMap.put("Canada", "Ottawa");
+    countryCityMap.put("Australian", "Canberra");
+
+    assertThat(countryCityMap).isNotEmpty()          //Map is not empty
+            .hasSize(4)                              //Size = 4
+            .doesNotContainValue("Sydney")           //Does not contain value "Sydney"
+            .contains(entry("Viet Nam", "Ha Noi"))   //Contain ("Viet Nam", "Ha Noi")
+            .containsKey("Japan")                    //Contains key "Japan"
+            .containsValue("Ottawa");                //Contains value Ottawa
+}
+```
+
+* * *
+
+### Throwable assertions
+
+Throwable assertions cho phép kiểm tra các message của ngoại lệ, stack trade, kiểm tra nguyên nhân hoặc xác minh nếu một ngoại lệ được đưa ra
+
+Ví dụ:
+
+```java
+@Test
+@DisplayName("TestThrowable")
+void testMethod_Throwable(){
+    IllegalArgumentException illegalArgumentException = new IllegalArgumentException("This is error message");
+    IllegalArgumentException illegalArgumentExceptionWithCause = new IllegalArgumentException("This is error message", new IOException());
+
+    assertThat(illegalArgumentException).hasNoCause()
+            .hasMessageStartingWith("T")
+            .hasMessageEndingWith("e");
+    assertThat(illegalArgumentExceptionWithCause).hasCauseExactlyInstanceOf(IOException.class);
+}
+```
+
+* * *
+
+### Class Assertions và miêu tả Assertions
+
+Class Assertion chủ yếu thực hiện các việc kiểm tra các trường, method, có annotation hay không, có là interface, có là lớp final,…
+
+Chúng ta có thể tạo ra các mô tả cho assertions của mình với phương thức _as()_
+
+```java
+@Test
+@DisplayName("TestThrowable")
+void testMethod_Class(){
+    Dog mic = new Dog("Mic", 10.5);
+    assertThat(Dog.class).isNotAnnotation()
+            .isNotFinal()
+            .hasDeclaredFields("name")
+            .hasDeclaredFields("weight");
+    assertThat(mic.getWeight()).as("%d's weight need to be more than 0", mic.getName())
+            .isGreaterThan(0);
+}
 ```
