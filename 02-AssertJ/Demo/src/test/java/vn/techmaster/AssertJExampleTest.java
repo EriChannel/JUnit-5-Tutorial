@@ -4,6 +4,11 @@ import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.entry;
 import static org.assertj.core.api.Assertions.withPrecision;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -65,6 +70,7 @@ class AssertJExampleTest {
         assertThat(say).isEqualTo(sayClone);
     }
 
+
     @Test
     @DisplayName("TestNumbers")
     void testMethod_Numbers(){
@@ -75,12 +81,55 @@ class AssertJExampleTest {
         assertThat(value).isStrictlyBetween(10.0, 15.0); //value > 10.0 and value < 15.0
     }
 
+    @Test
+    @DisplayName("TestMap")
+    void testMethod_Map(){
+        Map<String, String> countryCityMap = new HashMap<String, String>();
+        countryCityMap.put("Viet Nam", "Ha Noi");
+        countryCityMap.put("Japan", "Tokyo");
+        countryCityMap.put("Canada", "Ottawa");
+        countryCityMap.put("Australian", "Canberra");
+
+        assertThat(countryCityMap).isNotEmpty()          //Map is not empty
+                .hasSize(4)                              //Size = 4
+                .doesNotContainValue("Sydney")           //Does not contain value "Sydney"
+                .contains(entry("Viet Nam", "Ha Noi"))   //Contain ("Viet Nam", "Ha Noi")
+                .containsKey("Japan")                    //Contains key "Japan"
+                .containsValue("Ottawa");                //Contains value Ottawa
+    }
+
+    @Test
+    @DisplayName("TestThrowable")
+    void testMethod_Throwable(){
+        IllegalArgumentException illegalArgumentException = new IllegalArgumentException("This is error message");
+        IllegalArgumentException illegalArgumentExceptionWithCause = new IllegalArgumentException("This is error message", new IOException());
+
+        assertThat(illegalArgumentException).hasNoCause()
+                .hasMessageStartingWith("T")
+                .hasMessageEndingWith("e");
+        assertThat(illegalArgumentExceptionWithCause).hasCauseExactlyInstanceOf(IOException.class);
+    }
+
+    @Test
+    @DisplayName("TestThrowable")
+    void testMethod_Class(){
+        Dog mic = new Dog("Mic", 10.5);
+        assertThat(Dog.class).isNotAnnotation()
+                .isNotFinal()
+                .hasDeclaredFields("name")
+                .hasDeclaredFields("weight");
+        assertThat(mic.getWeight()).as("%d's weight need to be more than 0", mic.getName())
+                .isGreaterThan(0);
+    }
+
+
+
 //    private vn.techmaster.Test test;
 //    @BeforeEach
 //    public void setup() {
 //        test = new vn.techmaster.Test();
 //    }
-//
+////
 //    @Test
 //    @DisplayName("Chia số cho 0")
 //    void testDivisor(){
@@ -90,14 +139,15 @@ class AssertJExampleTest {
 //
 //        assertThat(divisor).isNotZero();
 //
-//    }
 //
-//    @Test
-//    @DisplayName("Số điện thoại bắt đầu là 0 và chỉ có số")
-//    void test_contact(){
-//        String phoneNUmber = "0123456789";
-//        assertThat(phoneNUmber).isNotEmpty()
-//                .startsWith("0")
-//                .containsOnlyDigits();
 //    }
+
+    @Test
+    @DisplayName("Số điện thoại bắt đầu là 0 và chỉ có số")
+    void test_contact(){
+        String phoneNUmber = "0123456789";
+        assertThat(phoneNUmber).isNotEmpty()
+                .startsWith("0")
+                .containsOnlyDigits();
+    }
 }

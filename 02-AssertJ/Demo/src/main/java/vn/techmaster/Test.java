@@ -17,9 +17,9 @@ public class Test {
         return (double) b/a;
     }
 
-    String contact(){
-        Scanner sc = new Scanner(System.in);
-        String phoneNumber = sc.nextLine();
-        return phoneNumber;
-    }
+//    String contact(){
+//        Scanner sc = new Scanner(System.in);
+//        String phoneNumber = sc.nextLine();
+//        return phoneNumber;
+//    }
 }
